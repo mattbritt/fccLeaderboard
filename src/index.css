@@ -3,3 +3,43 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+#Leaderboard {
+  border-radius: 10px;
+}
+
+#TitleBar {
+  background-color: green;
+  color: white;
+  font-size: 20pt;
+  
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+}
+
+#thNum {
+  width: 5%;
+}
+
+#thName {
+  width: 45%;
+}
+
+#thRecent {
+  width: 25%;
+}
+
+#thAllTime {
+  width: 25%;
+}
