@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
+import Camper from './Camper';
+
 export default class LBTable extends Component {
     
     constructor(){
@@ -12,7 +14,9 @@ let html = <tr><td>1</td><td>Matt</td></tr>;
             selectRecent: true,
             recent: [],
             allTime: [],
-            table: []
+            table: [],
+            recentTitle: '',
+            allTimeTitle: ''
         }
     }
     
@@ -23,15 +27,14 @@ let thisVar = this;
         $.get('https://fcctop100.herokuapp.com/api/fccusers/top/recent','', 
             function(data){
                 thisVar.setState({ recent: data })
-                console.log('Got recent data');
-                thisVar.handleTable();
+                thisVar.handleTable(true);
                })
 
 //get all time data
         $.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime','',
             function(data){
                 thisVar.setState({ allTime: data });
-             thisVar.handleTable();    
+             thisVar.handleTable(true);    
             })
             
     }
@@ -48,6 +51,7 @@ handleTable(recent){
 
     var html = [];
     var data;
+    var url;
 
 if( recent ){
     data = this.state.recent
@@ -56,17 +60,27 @@ else { data = this.state.allTime }
 
 if(data.length > 0){
 for(var i = 0; i < 30; i++){
+    
+    url = 'https://www.freecodecamp.com/' + data[i].username;
     html.push(
     <tr key={i}>
         <td>{i+1}</td>
-        <td>{data[i].username}</td>
+        <Camper imgsrc={data[i].img} 
+                username={data[i].username}
+                userUrl={url}/>
         <td>{data[i].recent}</td>
         <td>{data[i].alltime}</td>
     </tr>)
 }
+
+var recentTitle = (recent) ? 'Points in past 30 days▼' : 'Points in past 30 days';
+var allTimeTitle = (recent) ? 'All time points' : 'All time points▼';
+
 this.setState({table: html,
-                selectRecent: recent});
-this.forceUpdate();
+                selectRecent: recent,
+                recentTitle: recentTitle,
+                allTimeTitle: allTimeTitle });
+//this.forceUpdate();
 }
 }
 
@@ -79,8 +93,8 @@ this.forceUpdate();
                     <tr>
                      <th id='thNum'>#</th>
                      <th id='thName'>Camper Name</th>
-                     <th id='thRecent'><a href='#' onClick={this.handleRecentClick.bind(this)}>Points in past 30 days</a></th>
-                     <th id='thAllTime'><a href='#' onClick={this.handleAllTimeClick.bind(this)}>All time points</a></th>
+                     <th id='thRecent'><a href='#' onClick={this.handleRecentClick.bind(this)}>{this.state.recentTitle}</a></th>
+                     <th id='thAllTime'><a href='#' onClick={this.handleAllTimeClick.bind(this)}>{this.state.allTimeTitle}</a></th>
                     </tr>
                     {this.state.table}
                 </tbody>

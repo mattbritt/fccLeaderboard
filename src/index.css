@@ -43,3 +43,8 @@ th, td {
 #thAllTime {
   width: 25%;
 }
+
+.user-img {
+  width: 25%;
+  border-radius: 10px;
+}
